@@ -6,9 +6,19 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/cors": "^1.1.1",
+    "@elysiajs/jwt": "^1.1.1",
+    "@elysiajs/swagger": "^1.1.5",
+    "crypto": "^1.0.1",
+    "elysia": "latest",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.8.1",
+    "path": "^0.12.7",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
+    "@types/shortid": "^2.2.0",
     "bun-types": "latest"
   },
   "module": "src/index.js"

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Upload Form</title>
+  </head>
+  <body>
+    <h2>Add Product</h2>
+    <form id="productForm">
+      <div>
+        <label for="name">Name:</label><br />
+        <input type="text" id="name" name="name" required />
+      </div>
+      <br />
+      <div>
+        <label for="description">Description:</label><br />
+        <textarea id="description" name="description"></textarea>
+      </div>
+      <br />
+      <div>
+        <label for="price">Price:</label><br />
+        <input type="number" id="price" name="price" required />
+      </div>
+      <br />
+      <div>
+        <label for="category">Category:</label><br />
+        <input type="text" id="category" name="category" required />
+      </div>
+      <br />
+      <div>
+        <label for="stock">Stock:</label><br />
+        <input type="number" id="stock" name="stock" />
+      </div>
+      <br />
+      <div>
+        <label for="image">Images:</label><br />
+        <input
+          type="file"
+          id="image"
+          name="image"
+          multiple
+          accept="image/*"
+          required
+        />
+      </div>
+      <br />
+      <div>
+        <label for="is_active">Active:</label>
+        <input type="checkbox" id="is_active" name="is_active" checked />
+      </div>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          // Prepare the form data
+          const formData = new FormData();
+
+          // Add regular form fields
+          formData.append("name", document.getElementById("name").value);
+          formData.append(
+            "description",
+            document.getElementById("description").value
+          );
+          formData.append(
+            "price",
+            Number(document.getElementById("price").value)
+          ); // Ensure it's a number
+          formData.append(
+            "category",
+            document.getElementById("category").value
+          );
+          formData.append(
+            "stock",
+            Number(document.getElementById("stock").value || "0")
+          ); // Ensure it's a number
+          formData.append(
+            "is_active",
+            document.getElementById("is_active").checked
+          );
+
+          // Add the selected image files
+          const fileInput = document.getElementById("image");
+          for (const file of fileInput.files) {
+            formData.append("image", file);
+          }
+
+          try {
+            // Send the data as multipart/form-data without setting Content-Type manually
+            const response = await fetch("http://localhost:3000/products", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+            console.log("Response:", result);
+            alert(result.message || "Product added successfully!");
+
+            if (response.ok) {
+              document.getElementById("productForm").reset();
+            }
+          } catch (error) {
+            console.error("Error details:", error);
+            alert("Error uploading product: " + error.message);
+          }
+        });
+    </script>
+  </body>
+</html>
